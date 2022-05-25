@@ -4,38 +4,52 @@ import {
     Toolbar,
     Grid,
     Card,
-    CardContent
+    CardMedia,
+    CardContent,
+    Typography,
+    CircularProgress
 } from "@mui/material"
 import mockData from "./mockData"
+import { toFirstCharUppercase } from "./constants";
 
-const getPokemonCard = () => {
-    return(
-    <Grid item xs = {4} sm = {4}>
-        <Card>
-            <CardContent>
-                Hi
-            </CardContent>
-        </Card>
-    </Grid>
-    )
-}
-
-const Pokedex = () => {
+const Pokedex = props => {
+    const { history } = props;
     const [pokemonData, setPokemonData] = useState(mockData);
+
+    const getPokemonCard = (pokemonId) => {
+       console.log(pokemonData[pokemonId])
+        const { id, name } = pokemonData[pokemonId];
+        const sprite = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+id+".png"
     
+    
+        return(
+        <Grid item xs = {4} key = {pokemonId}>
+            <Card onClick = {() => history.push(pokemonId)}>
+               <CardMedia
+                    image={sprite}
+                    style={{ width: "130px", height: "130px" }}
+               />
+                <CardContent>
+                <Typography>{`${id}. ${toFirstCharUppercase(name)}`}</Typography>
+                </CardContent>
+            </Card>
+        </Grid>
+        )
+    }
+
     return (
         <>
             <AppBar position = "static">
-                <Toolbar/>
+                <Toolbar />
             </AppBar>
+            {pokemonData ? (
             <Grid container spacing = {4}>
-                  {getPokemonCard()}
-                  {getPokemonCard()}
-                  {getPokemonCard()}
-                  {getPokemonCard()}
-                  {getPokemonCard()}
-                  {getPokemonCard()}
+                  {Object.keys(pokemonData).map(pokemonId => 
+                    getPokemonCard(pokemonId))}
             </Grid>
+            ) : (
+                <CircularProgress />
+            )}
         </>
     );
 };
