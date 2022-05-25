@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     AppBar,
     Toolbar,
@@ -6,7 +6,7 @@ import {
     Card,
     CardContent
 } from "@mui/material"
-
+import mockData from "./mockData"
 
 const getPokemonCard = () => {
     return(
@@ -21,6 +21,7 @@ const getPokemonCard = () => {
 }
 
 const Pokedex = () => {
+    const [pokemonData, setPokemonData] = useState(mockData);
     
     return (
         <>
